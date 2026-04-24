@@ -1,25 +1,31 @@
 require("dotenv").config();
-const db = require("./db");
+const express = require("express");
+const cors = require("cors");
+const db = require("./config/db");
+const registerRoutes = require("./config/routes");
 
-async function testConnection() {
-  const requiredVars = ["DB_USER", "DB_PASSWORD", "DB_NAME"];
-  const missingVars = requiredVars.filter((name) => !process.env[name]);
+const app = express();
+const PORT = Number(process.env.PORT || 3000);
+app.db = db;
 
-  if (missingVars.length > 0) {
-    console.error(
-      `Variaveis ausentes no .env: ${missingVars.join(", ")}. Preencha e tente novamente.`
-    );
-    process.exit(1);
-  }
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+app.use(express.json());
 
-  try {
-    const [rows] = await db.query("SELECT 1 + 1 AS resultado");
-    console.log("Conexao com MySQL OK. Resultado do teste:", rows[0].resultado);
-    process.exit(0);
-  } catch (error) {
-    console.error("Falha ao conectar no MySQL:", error.message);
-    process.exit(1);
-  }
-}
+registerRoutes(app);
 
-testConnection();
+app.use((_req, res) => {
+  res.status(404).json({ message: "Rota nao encontrada" });
+});
+
+app.use((error, _req, res, _next) => {
+  console.error(error);
+  res.status(500).json({ message: "Erro interno do servidor" });
+});
+
+app.listen(PORT, () => {
+  console.log(`API Patrique Fitness rodando na porta ${PORT}`);
+});

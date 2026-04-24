@@ -1,6 +1,9 @@
 const db = require("./db");
+const authApi = require("../api/auth/auth");
 
 function registerRoutes(app) {
+  authApi(app);
+
   app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok" });
   });
