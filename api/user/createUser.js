@@ -1,6 +1,31 @@
 const { normalizeEmail, hashPassword } = require("../auth/shared");
 const { findUserByEmail } = require("./user");
 
+function isValidEmail(email) {
+  if (typeof email !== "string" || /\s/.test(email)) {
+    return false;
+  }
+
+  const match = email.match(/^[^\s@]+@([^\s@]+\.[^\s@]+)$/);
+  if (!match) {
+    return false;
+  }
+
+  const allowedDomains = new Set([
+    "gmail.com",
+    "outlook.com",
+    "hotmail.com",
+    "live.com",
+    "icloud.com",
+    "me.com",
+    "yahoo.com",
+    "proton.me",
+    "protonmail.com",
+  ]);
+
+  return allowedDomains.has(match[1].toLowerCase());
+}
+
 async function createUser(db, payload) {
   const nome = String(payload.nome || "").trim();
   const email = normalizeEmail(payload.email);
@@ -10,6 +35,10 @@ async function createUser(db, payload) {
 
   if (!nome || !email || !senha) {
     return { status: 400, body: { message: "nome, email e senha sao obrigatorios" } };
+  }
+
+  if (!isValidEmail(email)) {
+    return { status: 400, body: { message: "email invalido: use um provedor permitido (gmail, outlook, icloud, etc)" } };
   }
 
   if (senha.length < 6) {
