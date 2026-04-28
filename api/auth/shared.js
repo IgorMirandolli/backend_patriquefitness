@@ -38,6 +38,11 @@ function sanitizeUser(user) {
     telefone: user.telefone,
     tipo: user.tipo,
     ativo: Boolean(user.ativo),
+    altura: user.altura,
+    peso: user.peso,
+    objetivo: user.objetivo,
+    nivel_experiencia: user.nivel_experiencia,
+    foto_perfil: user.foto_perfil,
     data_criacao: user.data_criacao,
     data_atualizacao: user.data_atualizacao,
   };
