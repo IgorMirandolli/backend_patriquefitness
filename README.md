@@ -249,7 +249,7 @@ We use a modern and energetic palette to reflect workout intensity:
 
 - **Frontend:** Flutter
 
-- **Backend:** 
+- **Backend:** https://github.com/IgorMirandolli/patrique_app
 
 - **Database:** 
 
