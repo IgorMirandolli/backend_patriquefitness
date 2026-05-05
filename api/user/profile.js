@@ -27,9 +27,9 @@ function normalizeObjetivo(value) {
   const map = {
     hipertrofia: "Hipertrofia",
     emagrecimento: "Emagrecimento",
-    resistencia: "Resistencia",
-    forca: "Forca",
-    "saude geral": "Saude geral",
+    resistencia: "Resistência",
+    forca: "Força",
+    "saude geral": "Saúde geral",
   };
 
   return map[normalized] || null;
@@ -39,8 +39,8 @@ function normalizeNivel(value) {
   const normalized = normalizeText(value);
   const map = {
     iniciante: "Iniciante",
-    intermediario: "Intermediario",
-    avancado: "Avancado",
+    intermediario: "Intermediário",
+    avancado: "Avançado",
   };
 
   return map[normalized] || null;
