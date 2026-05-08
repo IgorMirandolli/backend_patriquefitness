@@ -1,13 +1,13 @@
-# 🏋️‍♂️ Patrique Fitness — Gym App
+# Patrique Fitness — Backend API
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/872c4423-6739-4926-8d9a-dbbb9f42105e" width="300"/>
+  <img src="https://raw.githubusercontent.com/victorhasse/patrique_app/main/assets/images/marca_fundo_preto.png" width="280"/>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Flutter-3.41.7-blue?logo=flutter" />
-  <img src="https://img.shields.io/badge/Dart-3.x-blue?logo=dart" />
-  <img src="https://img.shields.io/badge/Platform-iOS-lightgrey?logo=apple" />
+  <img src="https://img.shields.io/badge/Node.js-20.x-green?logo=node.js" />
+  <img src="https://img.shields.io/badge/JavaScript-ES2022-yellow?logo=javascript" />
+  <img src="https://img.shields.io/badge/MySQL-8.x-blue?logo=mysql" />
   <img src="https://img.shields.io/badge/Status-In%20Development-yellow" />
 </p>
 
@@ -17,161 +17,188 @@
 
 ---
 
-## 📱 About the project
+## 📡 About
 
-**Patrique Fitness** is a mobile gym application built with Flutter, developed as both a portfolio project and academic work. The app delivers a gamified experience for workout management, nutrition tracking, and social interaction between users — inspired by Duolingo's engagement mechanics applied to the fitness world.
+This is the **REST API backend** for the Patrique Fitness mobile app, built with Node.js and MySQL. It handles authentication, user data, workout management, nutrition tracking, friends, and subscription plans.
 
----
-
-## ✨ Features
-
-### 🔐 Authentication
-- Animated splash screen with dynamic theme support (light/dark)
-- Interactive onboarding for new users
-- Login and sign-up with field validation
-
-### 🏠 Home
-- Personalized user greeting
-- Streak card showing consecutive training days
-- Weekly workout overview
-- Shimmer loading effect
-- Clickable next workout cards with direct navigation
-
-### 💪 Workouts
-- Workout list organized by muscle group (A, B, C)
-- Detail screen showing exercises, sets, weights, and rest intervals
-- Workout execution with real-time total timer
-- Integrated YouTube video player for each exercise
-- Rest timer between sets with skip option
-- Completion screen with star rating and streak update
-- Custom workout creation with drag-to-reorder
-
-### 📅 Calendar
-- Monthly view of completed workout days — Duolingo style
-- Automatically calculated streak
-- Stats: current streak, monthly workouts, and total count
-
-### 🤖 Chatbot
-- PratiqueBot with a full decision tree
-- Answers questions about training, nutrition, and recovery
-- Conversation history with interactive quick replies
-
-### 👥 Friends
-- Friends list with real-time online status
-- Full friend profile with stats
-- Gamified weekly ranking with podium (🥇🥈🥉)
-- Weekly and monthly challenges with points system
-
-### 🥗 Nutrition
-- Daily calorie tracking with progress bar
-- Macronutrient tracking (protein, carbs, fat)
-- Expandable meals with checklist (breakfast, lunch, snack, dinner)
-- Weekly diet history with streak
-- Schedule a consultation with a nutritionist via WhatsApp
-
-### 💳 Plans
-- Monthly and annual plans with price comparison
-- Subscription confirmation screen
-
-### 👤 Profile
-- Editable personal and physical data (name, weight, height)
-- Customizable fitness goal and experience level
-- Workout stats (streak, monthly workouts, total)
-- Plan management
-- Configurable daily reminder notifications
-- Persistent light/dark theme toggle
-
----
-
-## 🎨 Brand Identity
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Primary pink | `#FF3E7D` | Primary color, buttons, highlights |
-| Dark pink | `#D61A5E` | Gradients |
-| Light pink | `#F8A9D5` | Text on dark backgrounds |
-| Dark background | `#111217` | Dark mode background |
-| Dark surface | `#1C1D21` | Dark mode cards |
+**Frontend repository:** [victorhasse/patrique_app](https://github.com/victorhasse/patrique_app)
 
 ---
 
 ## 🛠️ Tech stack
 
-| Package | Version | Usage |
-|---------|---------|-------|
-| `flutter` | 3.41.7 | Main framework |
-| `youtube_player_flutter` | 9.x | In-app video player |
-| `shared_preferences` | — | Local persistence |
-| `flutter_local_notifications` | 17.x | Workout reminders |
-| `shimmer` | — | Loading skeleton effect |
-| `flutter_launcher_icons` | — | App icon generation |
+| Technology | Version | Usage |
+|------------|---------|-------|
+| `Node.js` | 20.x | Runtime |
+| `JavaScript` | ES2022 | Language |
+| `Express` | 4.x | HTTP framework |
+| `MySQL` | 8.x | Relational database |
+| `JWT` | — | Authentication tokens |
+| `bcrypt` | — | Password hashing |
+| `dotenv` | — | Environment variables |
 
 ---
 
 ## 📁 Project structure
 
 ```
-lib/
-├── core/
-│   ├── theme/
-│   │   ├── app_theme.dart          # Light and dark themes
-│   │   ├── app_transitions.dart    # Navigation animations
-│   │   └── theme_utils.dart        # Context extensions
-│   ├── notification_service.dart   # Notification service
-│   └── theme_controller.dart       # Theme controller
-├── features/
-│   ├── auth/
-│   ├── home/
-│   ├── treino/
-│   ├── chatbot/
-│   ├── amigos/
-│   ├── nutricao/
-│   └── perfil/
-├── shared/
-│   └── widgets/
-└── main.dart
+backend_patriquefitness/
+├── api/
+│   ├── routes/          # API route definitions
+│   ├── controllers/     # Request handlers
+│   ├── models/          # Database models
+│   └── middlewares/     # Auth and validation middlewares
+├── config/
+│   └── database.js      # MySQL connection setup
+├── docs/
+│   └── README_PT.md     # Portuguese documentation
+├── .env.example         # Environment variables template
+├── .gitignore
+├── index.js             # App entry point
+├── environment.js       # Environment configuration
+└── package.json
 ```
+
+---
+
+## 🔌 API Endpoints
+
+### 🔐 Authentication
+| Method | Route | Description |
+|--------|-------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login and get token |
+| POST | `/api/auth/logout` | Logout user |
+
+### 👤 Users
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/users/profile` | Get user profile |
+| PUT | `/api/users/profile` | Update user profile |
+| PUT | `/api/users/password` | Change password |
+
+### 💪 Workouts
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/workouts` | List all workouts |
+| POST | `/api/workouts` | Create new workout |
+| GET | `/api/workouts/:id` | Get workout by ID |
+| PUT | `/api/workouts/:id` | Update workout |
+| DELETE | `/api/workouts/:id` | Delete workout |
+| POST | `/api/workouts/:id/complete` | Mark workout as completed |
+
+### 📅 Streak & Calendar
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/streak` | Get current streak |
+| GET | `/api/calendar` | Get workout calendar |
+| POST | `/api/calendar/checkin` | Check in for today |
+
+### 🥗 Nutrition
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/nutrition/today` | Get today's nutrition |
+| POST | `/api/nutrition/meal` | Log a meal |
+| PUT | `/api/nutrition/meal/:id` | Update a meal |
+| DELETE | `/api/nutrition/meal/:id` | Delete a meal |
+| GET | `/api/nutrition/history` | Get nutrition history |
+
+### 👥 Friends
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/friends` | List friends |
+| POST | `/api/friends/add` | Send friend request |
+| GET | `/api/friends/ranking` | Get weekly ranking |
+| GET | `/api/friends/:id/profile` | Get friend profile |
+
+### 💳 Plans
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/plans` | List available plans |
+| POST | `/api/plans/subscribe` | Subscribe to a plan |
+| GET | `/api/plans/current` | Get current subscription |
 
 ---
 
 ## 🚀 Getting started
 
 ### Prerequisites
-- Flutter 3.41.7 or higher
-- Xcode 16+ (for iOS)
-- CocoaPods installed
+- Node.js 20.x or higher
+- MySQL 8.x
+- npm or yarn
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/patrique_app.git
+git clone https://github.com/IgorMirandolli/backend_patriquefitness.git
 
 # Navigate to the project folder
-cd patrique_app
+cd backend_patriquefitness
 
 # Install dependencies
-flutter pub get
+npm install
 
-# Run the app on simulator
-flutter run
+# Copy the environment variables template
+cp .env.example .env
+
+# Edit .env with your credentials
+nano .env
 ```
+
+### Database setup
+
+```bash
+# Create the database in MySQL
+mysql -u root -p
+CREATE DATABASE patrique_fitness;
+EXIT;
+```
+
+### Run the server
+
+```bash
+# Development mode (with auto-reload)
+npm run dev
+
+# Production mode
+npm start
+```
+
+Server will be running at `http://localhost:3000`
 
 ---
 
-## 📸 Screenshots
+## 🔒 Environment variables
 
-> Coming soon
+Copy `.env.example` to `.env` and fill in your values:
+
+```env
+PORT=3000
+NODE_ENV=development
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=patrique_fitness
+DB_USER=your_user
+DB_PASSWORD=your_password
+
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=7d
+```
+
+> ⚠️ **Never commit your `.env` file to the repository!**
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Firebase integration (real authentication and database)
-- [ ] Illustrated characters on screens (Patrique Estrela and Chad Esponja)
-- [ ] Real payment integration via RevenueCat
-- [ ] Android version
-- [ ] Automated tests (unit and widget tests)
+- [ ] Unit and integration tests
+- [ ] API documentation with Swagger
+- [ ] Firebase Auth integration
+- [ ] Payment integration via Stripe / RevenueCat
+- [ ] Deploy to production (Railway / Render / AWS)
+- [ ] Rate limiting and security hardening
 
 ---
 
@@ -191,82 +218,3 @@ Academic and portfolio project — 2026
 ## 📄 License
 
 This project is licensed under the MIT License.
-## 👤 Créditos
-
-Desenvolvido por **Victor Hasse**, **Bernardo Santos Vieira**, **Guilherme Mitsuo Honda**, **Igor Vinicius Sotili Mirandolli**
-
-[![GitHub](https://img.shields.io/badge/victorhasse-181717?style=flat&logo=github)](https://github.com/victorhasse)
-[![GitHub](https://img.shields.io/badge/BernardoSVieira-181717?style=flat&logo=github)](https://github.com/BernardoSVieira)
-[![GitHub](https://img.shields.io/badge/lmitsuol-181717?style=flat&logo=github)](https://github.com/lmitsuol)
-[![GitHub](https://img.shields.io/badge/IgorMirandolli-181717?style=flat&logo=github)](https://github.com/IgorMirandolli)
-
-
----
-<div id="english-version">
-
-## 🇺🇸 About the Project
-**Patrique Fitness** is a complete ecosystem for those seeking health and high performance. More than just a workout tracker, the app uses gamification and AI to keep users motivated and well-guided.
-
-We feature exclusive characters and a mascot that follows your journey, making the training experience light and friendly.
-
-
-## ⚙️ Key Features
-
-- **Workout Management:** Organize your sets and exercises intuitively.
-
-- **Streak System:** Inspired by Duolingo, track your consistency with a visual calendar and keep up your streak.
-
-- **Smart Chatbot:** An optimized decision tree to answer quick questions about exercises, form, and basic nutrition.
-
-- **Plans & Payments:** Integrated monthly and annual subscription management.
-
-- **Gamification:** Interactive characters that assist and encourage the user.
-
-
-## 🎨 Visual Identity
-
-We use a modern and energetic palette to reflect workout intensity:
-
-- #ff3e7d (Primary Pink)
-
-- #f8a9d5 (Soft Accent)
-
-- #1c1d21 (Secondary Dark)
-
-
-## 🗺️ App Navigation
-
-- **Home:** Dashboard with activity summary and streaks.
-
-- **Workout:** List of the day's exercises.
-
-- **Chatbot:** Your virtual personal trainer, always available.
-
-- **Profile:** Personal data, progress, and plan settings.
-
-
-## 🛠️ Technologies
-
-- **Frontend:** Flutter
-
-- **Backend:** https://github.com/IgorMirandolli/patrique_app
-
-- **Database:** 
-
-
-## 💡 Ideas for the Future (Roadmap)
-- **Custom Notifications:** The mascot "reminding" you to complete your workout if you're about to lose your streak.
-
-- **Friends Ranking:** See who has the longest streak at the gym.
-
-- **Integration with ***HealthKit / Google Fit***:** To automatically import steps and calories.
-
-
-## 👤 Credits
-
-Developed by **Victor Hasse**, **Bernardo Santos Vieira**, **Guilherme Mitsuo Honda**, **Igor Vinicius Sotili Mirandolli**
-
-[![GitHub](https://img.shields.io/badge/victorhasse-181717?style=flat&logo=github)](https://github.com/victorhasse)
-[![GitHub](https://img.shields.io/badge/BernardoSVieira-181717?style=flat&logo=github)](https://github.com/BernardoSVieira)
-[![GitHub](https://img.shields.io/badge/lmitsuol-181717?style=flat&logo=github)](https://github.com/lmitsuol)
-[![GitHub](https://img.shields.io/badge/IgorMirandolli-181717?style=flat&logo=github)](https://github.com/IgorMirandolli)

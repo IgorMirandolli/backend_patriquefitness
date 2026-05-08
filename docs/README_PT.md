@@ -1,13 +1,13 @@
-# 🏋️‍♂️ Patrique Fitness — App de Academia
+# Patrique Fitness — Backend API
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/872c4423-6739-4926-8d9a-dbbb9f42105e" width="300"/>
+  <img src="https://raw.githubusercontent.com/victorhasse/patrique_app/main/assets/images/marca_fundo_preto.png" width="280"/>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Flutter-3.41.7-blue?logo=flutter" />
-  <img src="https://img.shields.io/badge/Dart-3.x-blue?logo=dart" />
-  <img src="https://img.shields.io/badge/Platform-iOS-lightgrey?logo=apple" />
+  <img src="https://img.shields.io/badge/Node.js-20.x-green?logo=node.js" />
+  <img src="https://img.shields.io/badge/JavaScript-ES2022-yellow?logo=javascript" />
+  <img src="https://img.shields.io/badge/MySQL-8.x-blue?logo=mysql" />
   <img src="https://img.shields.io/badge/Status-Em%20desenvolvimento-yellow" />
 </p>
 
@@ -17,161 +17,188 @@
 
 ---
 
-## 📱 Sobre o projeto
+## 📡 Sobre o projeto
 
-A **Patrique Fitness** é um aplicativo mobile de academia desenvolvido em Flutter, criado como projeto de portfólio e trabalho acadêmico. O app oferece uma experiência gamificada de gerenciamento de treinos, nutrição e interação social entre usuários — inspirado na dinâmica de engajamento do Duolingo aplicada ao mundo fitness.
+Esta é a **API REST backend** do aplicativo mobile Patrique Fitness, desenvolvida com Node.js e MySQL. Responsável por autenticação, dados de usuários, gerenciamento de treinos, nutrição, amigos e planos de assinatura.
 
----
-
-## ✨ Funcionalidades
-
-### 🔐 Autenticação
-- Splash screen com logo animada e tema dinâmico (claro/escuro)
-- Onboarding interativo para novos usuários
-- Login e cadastro com validação de campos
-
-### 🏠 Home
-- Saudação personalizada ao usuário
-- Card de streak com dias consecutivos de treino
-- Visão semanal de treinos realizados
-- Efeito shimmer de carregamento
-- Cards de próximos treinos clicáveis com navegação direta
-
-### 💪 Treinos
-- Lista de treinos organizados por grupo muscular (A, B, C)
-- Tela de detalhes com exercícios, séries, cargas e intervalos
-- Execução de treino com cronômetro total em tempo real
-- Player de vídeo do YouTube integrado para cada exercício
-- Timer de intervalo entre séries com opção de pular
-- Tela de conclusão com avaliação por estrelas e atualização do streak
-- Criação de treinos personalizados com arrastar para reordenar
-
-### 📅 Calendário
-- Visualização mensal dos dias treinados estilo Duolingo
-- Streak calculado automaticamente
-- Estatísticas: streak atual, treinos no mês e total geral
-
-### 🤖 Chatbot
-- PratiqueBot com árvore de decisões completa
-- Dúvidas sobre treino, nutrição e recuperação
-- Histórico da conversa com respostas rápidas interativas
-
-### 👥 Amigos
-- Lista de amigos com status online em tempo real
-- Perfil completo de cada amigo com estatísticas
-- Ranking semanal gamificado com pódio (🥇🥈🥉)
-- Desafios semanais e mensais entre amigos com sistema de pontos
-
-### 🥗 Nutrição
-- Controle de calorias diárias com barra de progresso
-- Acompanhamento de macronutrientes (proteína, carboidrato, gordura)
-- Refeições expansíveis com checklist (café, almoço, lanche, jantar)
-- Histórico semanal de dieta com streak
-- Agendamento de consulta com nutricionista via WhatsApp
-
-### 💳 Planos
-- Planos mensal e anual com comparativo de preços
-- Tela de confirmação de assinatura
-
-### 👤 Perfil
-- Dados pessoais e físicos editáveis (nome, peso, altura)
-- Objetivo e nível de experiência personalizáveis
-- Estatísticas de treino (streak, treinos no mês, total)
-- Gerenciamento de planos
-- Notificações locais com lembrete diário configurável
-- Toggle de tema claro e escuro persistente
+**Repositório frontend:** [victorhasse/patrique_app](https://github.com/victorhasse/patrique_app)
 
 ---
 
-## 🎨 Identidade visual
+## 🛠️ Tecnologias
 
-| Cor | Hex | Uso |
-|-----|-----|-----|
-| Rosa principal | `#FF3E7D` | Cor primária, botões, destaques |
-| Rosa escuro | `#D61A5E` | Gradientes |
-| Rosa claro | `#F8A9D5` | Textos sobre fundo escuro |
-| Fundo escuro | `#111217` | Background modo escuro |
-| Superfície escura | `#1C1D21` | Cards modo escuro |
-
----
-
-## 🛠️ Tecnologias e pacotes
-
-| Pacote | Versão | Uso |
-|--------|--------|-----|
-| `flutter` | 3.41.7 | Framework principal |
-| `youtube_player_flutter` | 9.x | Player de vídeo nos treinos |
-| `shared_preferences` | — | Persistência local |
-| `flutter_local_notifications` | 17.x | Lembretes de treino |
-| `shimmer` | — | Efeito de carregamento |
-| `flutter_launcher_icons` | — | Ícone do app |
+| Tecnologia | Versão | Uso |
+|------------|--------|-----|
+| `Node.js` | 20.x | Runtime |
+| `JavaScript` | ES2022 | Linguagem |
+| `Express` | 4.x | Framework HTTP |
+| `MySQL` | 8.x | Banco de dados relacional |
+| `JWT` | — | Tokens de autenticação |
+| `bcrypt` | — | Hash de senhas |
+| `dotenv` | — | Variáveis de ambiente |
 
 ---
 
 ## 📁 Estrutura do projeto
 
 ```
-lib/
-├── core/
-│   ├── theme/
-│   │   ├── app_theme.dart          # Temas claro e escuro
-│   │   ├── app_transitions.dart    # Animações de navegação
-│   │   └── theme_utils.dart        # Extensões de contexto
-│   ├── notification_service.dart   # Serviço de notificações
-│   └── theme_controller.dart       # Controlador de tema
-├── features/
-│   ├── auth/
-│   ├── home/
-│   ├── treino/
-│   ├── chatbot/
-│   ├── amigos/
-│   ├── nutricao/
-│   └── perfil/
-├── shared/
-│   └── widgets/
-└── main.dart
+backend_patriquefitness/
+├── api/
+│   ├── routes/          # Definição das rotas da API
+│   ├── controllers/     # Handlers das requisições
+│   ├── models/          # Modelos do banco de dados
+│   └── middlewares/     # Middlewares de auth e validação
+├── config/
+│   └── database.js      # Configuração da conexão MySQL
+├── docs/
+│   └── README_PT.md     # Documentação em português
+├── .env.example         # Template de variáveis de ambiente
+├── .gitignore
+├── index.js             # Ponto de entrada da aplicação
+├── environment.js       # Configuração de ambiente
+└── package.json
 ```
+
+---
+
+## 🔌 Endpoints da API
+
+### 🔐 Autenticação
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/api/auth/register` | Cadastrar novo usuário |
+| POST | `/api/auth/login` | Login e obtenção do token |
+| POST | `/api/auth/logout` | Logout do usuário |
+
+### 👤 Usuários
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/users/profile` | Buscar perfil do usuário |
+| PUT | `/api/users/profile` | Atualizar perfil |
+| PUT | `/api/users/password` | Alterar senha |
+
+### 💪 Treinos
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/workouts` | Listar todos os treinos |
+| POST | `/api/workouts` | Criar novo treino |
+| GET | `/api/workouts/:id` | Buscar treino por ID |
+| PUT | `/api/workouts/:id` | Atualizar treino |
+| DELETE | `/api/workouts/:id` | Deletar treino |
+| POST | `/api/workouts/:id/complete` | Marcar treino como concluído |
+
+### 📅 Streak e Calendário
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/streak` | Buscar streak atual |
+| GET | `/api/calendar` | Buscar calendário de treinos |
+| POST | `/api/calendar/checkin` | Registrar treino do dia |
+
+### 🥗 Nutrição
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/nutrition/today` | Nutrição do dia atual |
+| POST | `/api/nutrition/meal` | Registrar refeição |
+| PUT | `/api/nutrition/meal/:id` | Atualizar refeição |
+| DELETE | `/api/nutrition/meal/:id` | Deletar refeição |
+| GET | `/api/nutrition/history` | Histórico de nutrição |
+
+### 👥 Amigos
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/friends` | Listar amigos |
+| POST | `/api/friends/add` | Enviar solicitação de amizade |
+| GET | `/api/friends/ranking` | Ranking semanal |
+| GET | `/api/friends/:id/profile` | Perfil de um amigo |
+
+### 💳 Planos
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/plans` | Listar planos disponíveis |
+| POST | `/api/plans/subscribe` | Assinar um plano |
+| GET | `/api/plans/current` | Buscar assinatura atual |
 
 ---
 
 ## 🚀 Como rodar o projeto
 
 ### Pré-requisitos
-- Flutter 3.41.7 ou superior
-- Xcode 16+ (para iOS)
-- CocoaPods instalado
+- Node.js 20.x ou superior
+- MySQL 8.x
+- npm ou yarn
 
 ### Instalação
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/patrique_app.git
+git clone https://github.com/IgorMirandolli/backend_patriquefitness.git
 
 # Entre na pasta
-cd patrique_app
+cd backend_patriquefitness
 
 # Instale as dependências
-flutter pub get
+npm install
 
-# Rode o app no simulador
-flutter run
+# Copie o template de variáveis de ambiente
+cp .env.example .env
+
+# Edite o .env com suas credenciais
+nano .env
 ```
+
+### Configurar o banco de dados
+
+```bash
+# Crie o banco no MySQL
+mysql -u root -p
+CREATE DATABASE patrique_fitness;
+EXIT;
+```
+
+### Rodar o servidor
+
+```bash
+# Modo desenvolvimento (com auto-reload)
+npm run dev
+
+# Modo produção
+npm start
+```
+
+O servidor estará rodando em `http://localhost:3000`
 
 ---
 
-## 📸 Screenshots
+## 🔒 Variáveis de ambiente
 
-> Em breve
+Copie o `.env.example` para `.env` e preencha com seus valores:
+
+```env
+PORT=3000
+NODE_ENV=development
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=patrique_fitness
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+
+JWT_SECRET=sua_chave_secreta
+JWT_EXPIRES_IN=7d
+```
+
+> ⚠️ **Nunca commite o arquivo `.env` no repositório!**
 
 ---
 
 ## 🗺️ Próximos passos
 
-- [ ] Integração com Firebase (autenticação real e banco de dados)
-- [ ] Personagens ilustrados nas telas (Patrique Estrela e Chad Esponja)
-- [ ] Integração com pagamento real (RevenueCat)
-- [ ] Versão Android
-- [ ] Testes automatizados
+- [ ] Testes unitários e de integração
+- [ ] Documentação da API com Swagger
+- [ ] Integração com Firebase Auth
+- [ ] Integração com pagamento via Stripe / RevenueCat
+- [ ] Deploy em produção (Railway / Render / AWS)
+- [ ] Rate limiting e hardening de segurança
 
 ---
 
