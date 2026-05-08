@@ -1,2 +1,130 @@
+# ============================================================
+# NODE.JS / NPM
+# ============================================================
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
+.npm
+.yarn/
+.pnp.*
+*.tgz
+.node_repl_history
+jspm_packages/
+
+# ============================================================
+# VARIÁVEIS DE AMBIENTE E SEGREDOS
+# ============================================================
+# Nunca commitar arquivos com credenciais reais!
 .env
+.env.*
+!.env.example
+.env_file
+.env_local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+secrets.js
+secrets.json
+config/secrets.*
+*.pem
+*.key
+*.cert
+*.p12
+
+# ============================================================
+# BANCO DE DADOS
+# ============================================================
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+dump.sql
+data/
+
+# ============================================================
+# BUILD E DIST
+# ============================================================
+dist/
+build/
+out/
+.cache/
+tmp/
+temp/
+
+# ============================================================
+# LOGS
+# ============================================================
+logs/
+*.log
+pids/
+*.pid
+*.seed
+*.pid.lock
+lib-cov/
+coverage/
+.nyc_output/
+.grunt/
+
+# ============================================================
+# SISTEMA OPERACIONAL
+# ============================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ============================================================
+# EDITORES E IDEs
+# ============================================================
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# IntelliJ / WebStorm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+
+# ============================================================
+# TESTES
+# ============================================================
+coverage/
+.nyc_output/
+jest_html_reporters_attachments/
+
+# ============================================================
+# DEPLOY E CI/CD
+# ============================================================
+.vercel
+.netlify
+.serverless/
+.firebase/
+firebase-debug.log
+.elasticbeanstalk/
