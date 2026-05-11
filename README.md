@@ -7,6 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node.js-20.x-green?logo=node.js" />
   <img src="https://img.shields.io/badge/JavaScript-ES2022-yellow?logo=javascript" />
+  <img src="https://img.shields.io/badge/Express-5.x-lightgrey?logo=express" />
   <img src="https://img.shields.io/badge/MySQL-8.x-blue?logo=mysql" />
   <img src="https://img.shields.io/badge/Status-In%20Development-yellow" />
 </p>
@@ -19,7 +20,7 @@
 
 ## 📡 About
 
-This is the **REST API backend** for the Patrique Fitness mobile app, built with Node.js and MySQL. It handles authentication, user data, workout management, nutrition tracking, friends, and subscription plans.
+This is the **REST API backend** for the Patrique Fitness mobile app, built with Node.js, Express and MySQL. It handles authentication, user profiles, and an intelligent chatbot with personalized responses based on user data.
 
 **Frontend repository:** [victorhasse/patrique_app](https://github.com/victorhasse/patrique_app)
 
@@ -31,11 +32,13 @@ This is the **REST API backend** for the Patrique Fitness mobile app, built with
 |------------|---------|-------|
 | `Node.js` | 20.x | Runtime |
 | `JavaScript` | ES2022 | Language |
-| `Express` | 4.x | HTTP framework |
+| `Express` | 5.x | HTTP framework |
 | `MySQL` | 8.x | Relational database |
-| `JWT` | — | Authentication tokens |
-| `bcrypt` | — | Password hashing |
-| `dotenv` | — | Environment variables |
+| `mysql2` | 3.x | MySQL driver with promise support |
+| `jwt-simple` | 0.5.x | JWT token generation and validation |
+| `crypto` | Node built-in | Password hashing with scrypt |
+| `dotenv` | 17.x | Environment variables |
+| `cors` | 2.x | Cross-origin resource sharing |
 
 ---
 
@@ -44,18 +47,26 @@ This is the **REST API backend** for the Patrique Fitness mobile app, built with
 ```
 backend_patriquefitness/
 ├── api/
-│   ├── routes/          # API route definitions
-│   ├── controllers/     # Request handlers
-│   ├── models/          # Database models
-│   └── middlewares/     # Auth and validation middlewares
+│   ├── auth/
+│   │   ├── auth.js            # Register and login routes
+│   │   ├── authMiddleware.js  # JWT authentication middleware
+│   │   ├── adminMiddleware.js # Admin-only middleware
+│   │   └── shared.js          # Token, password and sanitize utils
+│   ├── user/
+│   │   ├── profile.js         # GET and PUT profile routes
+│   │   ├── user.js            # findUserByEmail helper
+│   │   └── createUser.js      # User creation logic
+│   └── chatbot/
+│       └── chatbot.js         # Decision tree chatbot with personalization
 ├── config/
-│   └── database.js      # MySQL connection setup
+│   ├── db.js                  # MySQL connection pool
+│   └── routes.js              # Route registration
 ├── docs/
-│   └── README_PT.md     # Portuguese documentation
-├── .env.example         # Environment variables template
+│   └── README_PT.md           # Portuguese documentation
+├── .env.example               # Environment variables template
 ├── .gitignore
-├── index.js             # App entry point
-├── environment.js       # Environment configuration
+├── environment.js             # Auth secret and token config
+├── index.js                   # App entry point
 └── package.json
 ```
 
@@ -64,59 +75,68 @@ backend_patriquefitness/
 ## 🔌 API Endpoints
 
 ### 🔐 Authentication
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | `/api/auth/register` | Register new user |
-| POST | `/api/auth/login` | Login and get token |
-| POST | `/api/auth/logout` | Logout user |
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| POST | `/auth/register` | ❌ | Register new user |
+| POST | `/auth/login` | ❌ | Login and receive JWT token |
 
-### 👤 Users
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/users/profile` | Get user profile |
-| PUT | `/api/users/profile` | Update user profile |
-| PUT | `/api/users/password` | Change password |
+### 👤 User Profile
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| GET | `/user/profile` | ✅ | Get authenticated user profile |
+| PUT | `/user/profile` | ✅ | Update user profile |
 
-### 💪 Workouts
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/workouts` | List all workouts |
-| POST | `/api/workouts` | Create new workout |
-| GET | `/api/workouts/:id` | Get workout by ID |
-| PUT | `/api/workouts/:id` | Update workout |
-| DELETE | `/api/workouts/:id` | Delete workout |
-| POST | `/api/workouts/:id/complete` | Mark workout as completed |
+### 🤖 Chatbot
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| POST | `/chatbot/reply` | ✅ | Get chatbot response for a given option |
 
-### 📅 Streak & Calendar
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/streak` | Get current streak |
-| GET | `/api/calendar` | Get workout calendar |
-| POST | `/api/calendar/checkin` | Check in for today |
+### 🩺 Health Check
+| Method | Route | Auth | Description |
+|--------|-------|------|-------------|
+| GET | `/health` | ❌ | Server health check |
+| GET | `/db-test` | ❌ | Database connection test |
 
-### 🥗 Nutrition
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/nutrition/today` | Get today's nutrition |
-| POST | `/api/nutrition/meal` | Log a meal |
-| PUT | `/api/nutrition/meal/:id` | Update a meal |
-| DELETE | `/api/nutrition/meal/:id` | Delete a meal |
-| GET | `/api/nutrition/history` | Get nutrition history |
+---
 
-### 👥 Friends
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/friends` | List friends |
-| POST | `/api/friends/add` | Send friend request |
-| GET | `/api/friends/ranking` | Get weekly ranking |
-| GET | `/api/friends/:id/profile` | Get friend profile |
+## 🤖 Chatbot
 
-### 💳 Plans
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/plans` | List available plans |
-| POST | `/api/plans/subscribe` | Subscribe to a plan |
-| GET | `/api/plans/current` | Get current subscription |
+The chatbot uses a **decision tree** with personalized responses based on the authenticated user's profile data (weight, experience level).
+
+**Available topics:**
+- 🏋️ Workout tips (sets, frequency, progression)
+- 🥗 Nutrition (pre/post workout meals, protein intake)
+- 📊 Caloric deficit macros — calculated from user's weight
+- 💪 Bulking macros — calculated from user's weight
+- 😴 Recovery (sleep, overtraining, muscle soreness)
+- 📈 Progress tracking (streak, weekly workouts)
+
+**Request body:**
+```json
+{
+  "option": "Déficit calórico para emagrecer"
+}
+```
+
+**Response:**
+```json
+{
+  "mensagem": "Peso cadastrado: 75kg\nMeta calórica (déficit): 2100 kcal/dia\n\nMacros diários sugeridos:\n- Proteína: 165g\n- Carboidratos: 210g\n- Gorduras: 60g",
+  "opcoes": ["Voltar ao início", "Bulking para ganho de massa"]
+}
+```
+
+---
+
+## 🔒 Authentication
+
+All protected routes require a JWT token in the `Authorization` header:
+
+```
+Authorization: Bearer <your_token>
+```
+
+The token is returned on `/auth/login` and `/auth/register`.
 
 ---
 
@@ -125,7 +145,7 @@ backend_patriquefitness/
 ### Prerequisites
 - Node.js 20.x or higher
 - MySQL 8.x
-- npm or yarn
+- npm
 
 ### Installation
 
@@ -149,18 +169,15 @@ nano .env
 ### Database setup
 
 ```bash
-# Create the database in MySQL
+# Access MySQL and create the database
 mysql -u root -p
-CREATE DATABASE patrique_fitness;
+CREATE DATABASE patriquefitness;
 EXIT;
 ```
 
 ### Run the server
 
 ```bash
-# Development mode (with auto-reload)
-npm run dev
-
 # Production mode
 npm start
 ```
@@ -175,30 +192,34 @@ Copy `.env.example` to `.env` and fill in your values:
 
 ```env
 PORT=3000
-NODE_ENV=development
 
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=patrique_fitness
+DB_NAME=patriquefitness
 DB_USER=your_user
 DB_PASSWORD=your_password
 
-JWT_SECRET=your_secret_key
-JWT_EXPIRES_IN=7d
+AUTH_SECRET=a_long_random_secret_string
+AUTH_EXPIRES_IN_SECONDS=86400
 ```
 
 > ⚠️ **Never commit your `.env` file to the repository!**
+> ⚠️ **Always set a strong `AUTH_SECRET` in production — never use the default value!**
 
 ---
 
 ## 🗺️ Roadmap
 
+- [ ] Workout management endpoints (CRUD)
+- [ ] Streak and calendar endpoints
+- [ ] Nutrition tracking endpoints
+- [ ] Friends and ranking endpoints
+- [ ] Subscription plans endpoints
+- [ ] `nodemon` for development auto-reload
 - [ ] Unit and integration tests
 - [ ] API documentation with Swagger
-- [ ] Firebase Auth integration
-- [ ] Payment integration via Stripe / RevenueCat
-- [ ] Deploy to production (Railway / Render / AWS)
 - [ ] Rate limiting and security hardening
+- [ ] Deploy to production (Railway / Render)
 
 ---
 
