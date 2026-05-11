@@ -1,3 +1,4 @@
+const authMiddleware = require("../auth/authMiddleware");
 const { normalizeEmail, sanitizeUser } = require("../auth/shared");
 const { findUserByEmail } = require("./user");
 
@@ -47,12 +48,10 @@ function normalizeNivel(value) {
 }
 
 module.exports = (app) => {
-  app.get("/user/profile", async (req, res, next) => {
+  // GET /user/profile — protegido por JWT
+  app.get("/user/profile", authMiddleware, async (req, res, next) => {
     try {
-      const email = normalizeEmail(req.query?.email);
-      if (!email) {
-        return res.status(400).json({ message: "email e obrigatorio" });
-      }
+      const email = req.user.email; // vem do token, não da query
 
       const user = await findUserByEmail(app.db, email);
       if (!user) {
@@ -65,19 +64,25 @@ module.exports = (app) => {
     }
   });
 
-  app.put("/user/profile", async (req, res, next) => {
+  // PUT /user/profile — protegido por JWT
+  app.put("/user/profile", authMiddleware, async (req, res, next) => {
     try {
-      const email = normalizeEmail(req.body?.email);
+      const email = req.user.email; // vem do token, não do body
+
       const nome = String(req.body?.nome || "").trim();
-      const telefone = req.body?.telefone ? String(req.body.telefone).trim() : null;
+      const telefone = req.body?.telefone
+        ? String(req.body.telefone).trim()
+        : null;
       const objetivo = normalizeObjetivo(req.body?.objetivo);
       const nivelExperiencia = normalizeNivel(req.body?.nivel_experiencia);
-      const fotoPerfil = req.body?.foto_perfil ? String(req.body.foto_perfil).trim() : null;
+      const fotoPerfil = req.body?.foto_perfil
+        ? String(req.body.foto_perfil).trim()
+        : null;
       const peso = parseOptionalNumber(req.body?.peso);
       const altura = parseOptionalNumber(req.body?.altura);
 
-      if (!email || !nome) {
-        return res.status(400).json({ message: "email e nome sao obrigatorios" });
+      if (!nome) {
+        return res.status(400).json({ message: "nome e obrigatorio" });
       }
 
       const user = await findUserByEmail(app.db, email);

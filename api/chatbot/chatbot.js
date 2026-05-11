@@ -1,4 +1,5 @@
-const { normalizeEmail } = require("../auth/shared");
+const authMiddleware = require("../auth/authMiddleware");
+const { sanitizeUser } = require("../auth/shared");
 const { findUserByEmail } = require("../user/user");
 
 const NUTRICAO = "Nutrição";
@@ -219,10 +220,12 @@ function personalizeResponse(option, response, user) {
 }
 
 module.exports = (app) => {
-  app.post("/chatbot/reply", async (req, res, next) => {
+  app.post("/chatbot/reply", authMiddleware, async (req, res, next) => {
     try {
       const option = String(req.body?.option || "inicio").trim() || "inicio";
-      const email = normalizeEmail(req.body?.email);
+      
+      // Agora pega o email do token em vez do body
+      const email = req.user.email;
 
       const tree = buildBaseTree();
       const fallback = tree.inicio;
@@ -232,12 +235,9 @@ module.exports = (app) => {
         opcoes: fallback.opcoes,
       };
 
-      let user = null;
-      if (email) {
-        user = await findUserByEmail(app.db, email);
-      }
-
+      const user = await findUserByEmail(app.db, email);
       const personalized = personalizeResponse(option, response, user);
+
       return res.status(200).json({
         mensagem: personalized.mensagem,
         opcoes: personalized.opcoes || [],
