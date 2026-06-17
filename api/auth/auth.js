@@ -1,6 +1,20 @@
 const createUser = require("../user/createUser");
 const { findUserByEmail } = require("../user/user");
-const { verifyPassword, sanitizeUser, buildToken, normalizeEmail } = require("./shared");
+const {
+  hashPassword,
+  verifyPassword,
+  sanitizeUser,
+  buildToken,
+  normalizeEmail,
+} = require("./shared");
+
+function nameFromEmail(email) {
+  const [name] = email.split("@");
+  return name
+    .replace(/[._-]+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .trim() || "Usuario Patrique";
+}
 
 module.exports = (app) => {
   app.post("/auth/register", async (req, res, next) => {
@@ -30,7 +44,17 @@ module.exports = (app) => {
         return res.status(400).json({ message: "email e senha sao obrigatorios" });
       }
 
-      const user = await findUserByEmail(app.db, email);
+      let user = await findUserByEmail(app.db, email);
+
+      if (!user && app.db && typeof app.db.createUser === "function") {
+        user = await app.db.createUser({
+          nome: nameFromEmail(email),
+          email,
+          senha: hashPassword(senha),
+          tipo: "aluno",
+        });
+      }
+
       if (!user || !verifyPassword(senha, user.senha)) {
         return res.status(401).json({ message: "email ou senha invalidos" });
       }

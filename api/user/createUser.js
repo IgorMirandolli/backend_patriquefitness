@@ -52,17 +52,19 @@ async function createUser(db, payload) {
 
   const senhaHash = hashPassword(senha);
 
-  const [result] = await db.query(
-    "INSERT INTO `user` (nome, email, senha, telefone, tipo, ativo, data_criacao, data_atualizacao) VALUES (?, ?, ?, ?, ?, 1, NOW(), NOW())",
-    [nome, email, senhaHash, telefone, tipo]
-  );
+  if (!db || typeof db.createUser !== "function") {
+    return { status: 500, body: { message: "armazenamento local indisponivel" } };
+  }
 
-  const [rows] = await db.query(
-    "SELECT id, nome, email, telefone, tipo, ativo, data_criacao, data_atualizacao FROM `user` WHERE id = ? LIMIT 1",
-    [result.insertId]
-  );
+  const user = await db.createUser({
+    nome,
+    email,
+    senha: senhaHash,
+    telefone,
+    tipo,
+  });
 
-  return { status: 201, body: rows[0] };
+  return { status: 201, body: user };
 }
 
 module.exports = createUser;

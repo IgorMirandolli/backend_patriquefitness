@@ -1,5 +1,5 @@
 const authMiddleware = require("../auth/authMiddleware");
-const { normalizeEmail, sanitizeUser } = require("../auth/shared");
+const { sanitizeUser } = require("../auth/shared");
 const { findUserByEmail } = require("./user");
 
 function parseOptionalNumber(value) {
@@ -90,12 +90,19 @@ module.exports = (app) => {
         return res.status(404).json({ message: "usuario nao encontrado" });
       }
 
-      await app.db.query(
-        "UPDATE `user` SET nome = ?, telefone = ?, objetivo = ?, nivel_experiencia = ?, foto_perfil = ?, peso = ?, altura = ?, data_atualizacao = NOW() WHERE id = ?",
-        [nome, telefone, objetivo, nivelExperiencia, fotoPerfil, peso, altura, user.id]
-      );
+      if (!app.db || typeof app.db.updateUserProfile !== "function") {
+        return res.status(500).json({ message: "armazenamento local indisponivel" });
+      }
 
-      const updated = await findUserByEmail(app.db, email);
+      const updated = await app.db.updateUserProfile(email, {
+        nome,
+        telefone,
+        objetivo,
+        nivel_experiencia: nivelExperiencia,
+        foto_perfil: fotoPerfil,
+        peso,
+        altura,
+      });
       return res.status(200).json({
         message: "perfil atualizado com sucesso",
         user: sanitizeUser(updated),

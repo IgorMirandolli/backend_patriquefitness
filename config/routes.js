@@ -1,4 +1,3 @@
-const db = require("./db");
 const authApi = require("../api/auth/auth");
 const profileApi = require("../api/user/profile");
 const chatbotApi = require("../api/chatbot/chatbot");
@@ -14,10 +13,10 @@ function registerRoutes(app) {
 
   app.get("/db-test", async (_req, res) => {
     try {
-      const [rows] = await db.query("SELECT 1 + 1 AS resultado");
+      const status = await app.db.ping();
       res.status(200).json({
-        connected: true,
-        result: rows[0].resultado,
+        ...status,
+        message: "rodando sem banco de dados",
       });
     } catch (error) {
       res.status(500).json({
